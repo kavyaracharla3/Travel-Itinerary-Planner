@@ -691,7 +691,13 @@ export default function App() {
   const [token, setToken] = useState(() => localStorage.getItem('waypoint_token'));
   const [user, setUser] = useState(() => {
     const raw = localStorage.getItem('waypoint_user');
-    return raw ? JSON.parse(raw) : null;
+    if (!raw || raw === 'undefined') return null;
+    try {
+      return JSON.parse(raw);
+    } catch {
+      localStorage.removeItem('waypoint_user');
+      return null;
+    }
   });
   const [authMode, setAuthMode] = useState(null); // null | 'login' | 'register'
   const [toastMsg, setToastMsg] = useState('');
